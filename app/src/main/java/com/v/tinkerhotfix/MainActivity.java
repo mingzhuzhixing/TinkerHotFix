@@ -18,12 +18,6 @@ public class MainActivity extends AppCompatActivity {
     public void clickWrong(View view) {
         int b = 12;
         int c = b / a;
-        Log.i("MainActivity", "clickWrong: "+c);
-        Log.i("MainActivity", "clickWrong: "+c);
-        Log.i("MainActivity", "clickWrong: "+c);
-        Log.i("MainActivity", "clickWrong: "+c);
-        Log.i("MainActivity", "clickWrong: "+c);
-        Log.i("MainActivity", "clickWrong: "+c);
     }
 
     public void fixWrong(View view) {
