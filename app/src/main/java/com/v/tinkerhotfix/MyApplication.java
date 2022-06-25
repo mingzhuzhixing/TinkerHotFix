@@ -23,7 +23,7 @@ public class MyApplication extends Application {
         super.onCreate();
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        Bugly.init(this, "7676be6ddc", true);
+        Bugly.init(this, "5050eed080", true);
     }
 
     @Override

@@ -5,22 +5,34 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    int a = 0;
+    private int a = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
-    public void clickWrong(View view) {
-        int b = 12;
-        int c = b / a;
-    }
+        TextView textView = findViewById(R.id.tv_text);
+        textView.setText("我是base包");
+        //textView.setText("我是patch包");
 
-    public void fixWrong(View view) {
-        a = 1;
+        findViewById(R.id.btn_click_wrong).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int b = 12;
+                int c = b / a;
+                Log.i("MainActivity", "c:" + c);
+            }
+        });
+
+        findViewById(R.id.btn_click_fix).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                a = 1;
+            }
+        });
     }
 }
