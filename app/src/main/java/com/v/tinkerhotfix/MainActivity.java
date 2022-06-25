@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private int a = 0;
+    private final boolean isType = BuildConfig.IS_BASE_APK == 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,8 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TextView textView = findViewById(R.id.tv_text);
-        textView.setText("我是base包");
-        //textView.setText("我是patch包");
+        textView.setText(isType ? "我是base包" : "我是patch包");
 
         findViewById(R.id.btn_click_wrong).setOnClickListener(new View.OnClickListener() {
             @Override
