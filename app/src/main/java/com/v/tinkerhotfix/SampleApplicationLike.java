@@ -1,0 +1,70 @@
+package com.v.tinkerhotfix;
+
+import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
+
+import androidx.multidex.MultiDex;
+
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.tinker.entry.DefaultApplicationLike;
+
+/**
+ * ClassName: SampleApplicationLike
+ * Description:
+ *
+ * @author zhuming
+ * @package_name com.v.tinkerhotfix
+ * @date 2022/6/28 4:14 下午
+ */
+public class SampleApplicationLike extends DefaultApplicationLike {
+    public static final String TAG = "Tinker.SampleApplicationLike";
+
+    public SampleApplicationLike(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
+                                 long applicationStartMillisTime, Intent tinkerResultIntent) {
+        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
+        // 调试时，将第三个参数改为true
+        Bugly.init(getApplication(), "5050eed080", true);
+
+        Log.i("SampleApplicationLike", "onCreate: "+getCurrentProcessName());
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    @Override
+    public void onBaseContextAttached(Context base) {
+        super.onBaseContextAttached(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+
+        // 安装tinker
+        // TinkerManager.installTinker(this); 替换成下面Bugly提供的方法
+        Beta.installTinker(this);
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    public void registerActivityLifecycleCallback(Application.ActivityLifecycleCallbacks callbacks) {
+        getApplication().registerActivityLifecycleCallbacks(callbacks);
+    }
+
+    private String getCurrentProcessName() {
+        final int pid = android.os.Process.myPid();
+        ActivityManager mActivityManager = (ActivityManager) getApplication().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo appProcess : mActivityManager.getRunningAppProcesses()) {
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
+    }
+}
